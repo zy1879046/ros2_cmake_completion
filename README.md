@@ -158,6 +158,23 @@ npm run package:vsix
 code --install-extension ros2-cmake-completion-0.0.1.vsix --force
 ```
 
+## 在其他电脑安装
+
+将项目目录复制到其他电脑，并确保已安装 VS Code、Node.js 和 npm。然后执行：
+
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+脚本会自动安装项目依赖、生成 VSIX 并安装扩展。如果已经有 VSIX 文件，也可以直接传入路径：
+
+```bash
+./install.sh /path/to/ros2-cmake-completion-0.0.1.vsix
+```
+
+脚本依赖 VS Code 命令行工具 `code`。如果终端提示找不到 `code`，请在 VS Code 命令面板执行“Shell Command: Install 'code' command in PATH”。
+
 ## 发布到扩展市场
 
 将 `package.json` 中的 `publisher` 设置为自己的 Marketplace Publisher ID，然后执行：
