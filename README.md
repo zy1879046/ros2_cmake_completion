@@ -28,6 +28,8 @@
 | `ros2_install_executable` | 将节点安装到 `lib/<package>` |
 | `ros2_install_share_directory` | 将 launch、config、rviz、urdf 等目录一起安装 |
 | `ros2_install_package_metadata` | 安装 `package.xml` 和 ament index 包标记 |
+| `ros2_interface_package` | 创建接口包并生成 `msg`、`srv`、`action` |
+| `rosidl_generate_interfaces` | 配置 ROS 2 接口生成 |
 
 ## 完整示例
 

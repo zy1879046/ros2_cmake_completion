@@ -91,6 +91,62 @@ const completions: CompletionDefinition[] = [
 		keywords: ['find_package', 'ament_cmake']
 	},
 	{
+		label: 'ros2_interface_package',
+		detail: 'Configure a ROS 2 interface package',
+		documentation: 'Finds the rosidl generator, generates msg/srv/action interfaces, and exports the runtime dependency.',
+		insertText: 'find_package(ament_cmake REQUIRED)\nfind_package(rosidl_default_generators REQUIRED)\n\nrosidl_generate_interfaces(\\${PROJECT_NAME}\n  "${1:msg/Example.msg}"\n  "${2:srv/Example.srv}"\n  "${3:action/Example.action}"\n  DEPENDENCIES\n    ${4:std_msgs}\n)\n\nament_export_dependencies(rosidl_default_runtime)\nament_package()',
+		keywords: ['ros2_interface_package', 'interface_package', 'rosidl']
+	},
+	{
+		label: 'rosidl_generate_interfaces',
+		detail: 'Generate ROS 2 message, service, or action interfaces',
+		documentation: 'Generates code and type support from .msg, .srv, and .action files.',
+		insertText: 'rosidl_generate_interfaces(\\${PROJECT_NAME}\n  "${1:msg/Example.msg}"\n  "${2:srv/Example.srv}"\n  "${3:action/Example.action}"\n  DEPENDENCIES\n    ${4:std_msgs}\n)',
+		keywords: ['rosidl_generate_interfaces', 'generate_interfaces', 'interface']
+	},
+	{
+		label: 'rosidl_generate_msg',
+		detail: 'Generate a ROS 2 message interface',
+		documentation: 'Adds a .msg interface file to the package interface generation step.',
+		insertText: 'rosidl_generate_interfaces(\\${PROJECT_NAME}\n  "${1:msg/Example.msg}"\n)',
+		keywords: ['rosidl_generate_msg', 'generate_msg', 'msg']
+	},
+	{
+		label: 'rosidl_generate_srv',
+		detail: 'Generate a ROS 2 service interface',
+		documentation: 'Adds a .srv interface file to the package interface generation step.',
+		insertText: 'rosidl_generate_interfaces(\\${PROJECT_NAME}\n  "${1:srv/Example.srv}"\n)',
+		keywords: ['rosidl_generate_srv', 'generate_srv', 'srv']
+	},
+	{
+		label: 'rosidl_generate_action',
+		detail: 'Generate a ROS 2 action interface',
+		documentation: 'Adds an .action interface file to the package interface generation step.',
+		insertText: 'rosidl_generate_interfaces(\\${PROJECT_NAME}\n  "${1:action/Example.action}"\n)',
+		keywords: ['rosidl_generate_action', 'generate_action', 'action']
+	},
+	{
+		label: 'find_package(rosidl_default_generators)',
+		detail: 'Find ROS 2 interface generators',
+		documentation: 'Provides rosidl_generate_interfaces for building message, service, and action definitions.',
+		insertText: 'find_package(rosidl_default_generators REQUIRED)',
+		keywords: ['find_package', 'rosidl_default_generators', 'interface_generators']
+	},
+	{
+		label: 'find_package(rosidl_default_runtime)',
+		detail: 'Find ROS 2 interface runtime support',
+		documentation: 'Provides runtime type support for generated interfaces.',
+		insertText: 'find_package(rosidl_default_runtime REQUIRED)',
+		keywords: ['find_package', 'rosidl_default_runtime', 'interface_runtime']
+	},
+	{
+		label: 'ament_export_dependencies(rosidl_default_runtime)',
+		detail: 'Export generated interface runtime support',
+		documentation: 'Makes generated interface type support available to downstream packages.',
+		insertText: 'ament_export_dependencies(rosidl_default_runtime)',
+		keywords: ['ament_export_dependencies', 'rosidl_default_runtime', 'export_interfaces']
+	},
+	{
 		label: 'find_package(ROS 2 dependency)',
 		detail: 'Find a ROS 2 package dependency',
 		documentation: 'Looks up a ROS 2 package exported through the ament index.',
