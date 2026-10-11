@@ -8,6 +8,7 @@ Context-aware completion for ROS 2 `CMakeLists.txt` files.
 - Type `ament_target_include` to insert build and install include directories.
 - Type `install` to insert target and directory installation rules.
 - Use `ros2_install_executable`, `ros2_install_library`, and `ros2_install_share_directory` for the standard `lib` and `share` layout.
+- Share resources such as `launch`, `config`, `rviz`, and `urdf` are installed together into `share/${PROJECT_NAME}`.
 - Installation snippets expose target names, source directories, package names, and destination subdirectories as Tab parameters.
 - Type `plugin` or `register` to register pluginlib descriptions and ament index resources.
 - Type `ros2_plugin_library` to create, install, and register a plugin library.

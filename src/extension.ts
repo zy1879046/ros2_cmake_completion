@@ -134,10 +134,17 @@ const completions: CompletionDefinition[] = [
 	},
 	{
 		label: 'ros2_install_share_directory',
-		detail: 'Install launch, config, rviz, or other package resources',
-		documentation: 'Installs a resource directory below share/<package>, commonly used for launch and config files.',
-		insertText: 'install(DIRECTORY ${1:launch}/\n  DESTINATION share/${2:\\${PROJECT_NAME}}/${3:launch}\n)',
+		detail: 'Install multiple ROS 2 package resource directories',
+		documentation: 'Installs launch, config, rviz, urdf, or other package resources together under share/<package>.',
+		insertText: 'install(DIRECTORY\n  ${1:launch}\n  ${2:config}\n  ${3:rviz}\n  ${4:urdf}\n  DESTINATION share/${5:\\${PROJECT_NAME}}\n)',
 		keywords: ['ros2_install_share_directory', 'install_share', 'launch', 'config']
+	},
+	{
+		label: 'ros2_install_share_files',
+		detail: 'Install package resource files into share',
+		documentation: 'Installs resource files such as YAML, RViz, or launch files directly under share/<package>.',
+		insertText: 'install(FILES\n  ${1:config/params.yaml}\n  ${2:rviz/view.rviz}\n  DESTINATION share/${3:\\${PROJECT_NAME}}\n)',
+		keywords: ['ros2_install_share_files', 'install_share_files', 'share_files']
 	},
 	{
 		label: 'ros2_install_include_directory',
