@@ -51,9 +51,10 @@
     "typescript": "^6.0.3",
     "@vscode/test-cli": "^0.0.15",
     "@vscode/test-electron": "^3.0.0",
-    "@vscode/vsce": "^3.7.1"
+    "@vscode/vsce": "2.26.1"
   },
   "overrides": {
+    "cheerio": "1.0.0-rc.12",
     "diff": "^8.0.4",
     "serialize-javascript": "^7.0.6"
   }

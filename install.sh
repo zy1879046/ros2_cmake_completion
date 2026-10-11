@@ -16,12 +16,14 @@ if [ -z "${VSIX_PATH}" ]; then
     echo "错误：未找到 npm。首次从源码安装需要 Node.js 和 npm。" >&2
     exit 1
   fi
+  if ! command -v node >/dev/null 2>&1; then
+    echo "错误：未找到 Node.js。首次从源码安装需要 Node.js 16 或更高版本。" >&2
+    exit 1
+  fi
 
   cd "${SCRIPT_DIR}"
-  if [ ! -d node_modules ]; then
-    echo "正在安装项目依赖..."
-    npm install
-  fi
+  echo "正在安装项目依赖..."
+  npm install
 
   echo "正在构建 VSIX..."
   npm run package:vsix

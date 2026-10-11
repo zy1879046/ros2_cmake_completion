@@ -173,6 +173,8 @@ chmod +x install.sh
 zsh install.sh
 ```
 
+从源码构建需要 Node.js 16 或更高版本。Node.js 18 容器可以直接使用；项目已固定 VSIX 打包工具及其兼容依赖，避免使用要求 Node.js 20 的最新版依赖。
+
 脚本会自动安装项目依赖、生成 VSIX 并安装扩展。如果已经有 VSIX 文件，也可以直接传入路径：
 
 ```bash
