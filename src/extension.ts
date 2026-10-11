@@ -31,21 +31,21 @@ const completions: CompletionDefinition[] = [
 		label: 'ros2_plugin_library',
 		detail: 'Build and register a ROS 2 plugin library',
 		documentation: 'Creates, installs, and exports a plugin library through pluginlib.',
-		insertText: 'add_library(${1:plugin_name} SHARED\n  ${2:src/plugin.cpp}\n)\n\nament_target_dependencies(${1}\n  ${3:pluginlib}\n)\n\npluginlib_export_plugin_description_file(${4:base_package} ${5:plugin_description.xml})\n\ninstall(TARGETS ${1}\n  ARCHIVE DESTINATION lib\n  LIBRARY DESTINATION lib\n  RUNTIME DESTINATION lib/${PROJECT_NAME}\n)\n\ninstall(FILES ${5}\n  DESTINATION share/${PROJECT_NAME}\n)',
+		insertText: 'add_library(${1:plugin_name} SHARED\n  ${2:src/plugin.cpp}\n)\n\nament_target_dependencies(${1}\n  ${3:pluginlib}\n)\n\npluginlib_export_plugin_description_file(${4:base_package} ${5:plugin_description.xml})\n\ninstall(TARGETS ${1}\n  ARCHIVE DESTINATION lib\n  LIBRARY DESTINATION lib\n  RUNTIME DESTINATION lib/\\${PROJECT_NAME}\n)\n\ninstall(FILES ${5}\n  DESTINATION share/\\${PROJECT_NAME}\n)',
 		keywords: ['ros2_plugin_library', 'plugin_library', 'plugin']
 	},
 	{
 		label: 'ros2_plugin_executable',
 		detail: 'Build and install a ROS 2 executable',
 		documentation: 'Creates an executable, links ROS 2 dependencies, and installs it under lib/<package>.',
-		insertText: 'add_executable(${1:executable_name}\n  ${2:src/main.cpp}\n)\n\nament_target_dependencies(${1}\n  ${3:rclcpp}\n)\n\ninstall(TARGETS ${1}\n  DESTINATION lib/${PROJECT_NAME}\n)',
+		insertText: 'add_executable(${1:executable_name}\n  ${2:src/main.cpp}\n)\n\nament_target_dependencies(${1}\n  ${3:rclcpp}\n)\n\ninstall(TARGETS ${1}\n  DESTINATION lib/\\${PROJECT_NAME}\n)',
 		keywords: ['ros2_plugin_executable', 'ros2_executable', 'executable']
 	},
 	{
 		label: 'ros2_component_library',
 		detail: 'Build and register a composable ROS 2 node library',
 		documentation: 'Creates a shared component library, registers one or more node classes, and installs it.',
-		insertText: 'add_library(${1:component_name} SHARED\n  ${2:src/component.cpp}\n)\n\nament_target_dependencies(${1}\n  ${3:rclcpp}\n  rclcpp_components\n)\n\nrclcpp_components_register_nodes(${1}\n  "${4:my_namespace::MyComponent}"\n)\n\ninstall(TARGETS ${1}\n  ARCHIVE DESTINATION lib\n  LIBRARY DESTINATION lib\n  RUNTIME DESTINATION lib/${PROJECT_NAME}\n)',
+		insertText: 'add_library(${1:component_name} SHARED\n  ${2:src/component.cpp}\n)\n\nament_target_dependencies(${1}\n  ${3:rclcpp}\n  rclcpp_components\n)\n\nrclcpp_components_register_nodes(${1}\n  "${4:my_namespace::MyComponent}"\n)\n\ninstall(TARGETS ${1}\n  ARCHIVE DESTINATION lib\n  LIBRARY DESTINATION lib\n  RUNTIME DESTINATION lib/\\${PROJECT_NAME}\n)',
 		keywords: ['ros2_component_library', 'component_library', 'component']
 	},
 	{
@@ -80,7 +80,7 @@ const completions: CompletionDefinition[] = [
 		label: 'ament_target_include',
 		detail: 'Configure ROS 2 target include directories',
 		documentation: 'Adds build and install include paths to a target.',
-		insertText: 'target_include_directories(${1:target_name} PUBLIC\n  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>\n  $<INSTALL_INTERFACE:include>\n)',
+		insertText: 'target_include_directories(${1:target_name} PUBLIC\n  $<BUILD_INTERFACE:\\${CMAKE_CURRENT_SOURCE_DIR}/include>\n  $<INSTALL_INTERFACE:include>\n)',
 		keywords: ['ament_target_include', 'target_include_directories', 'include']
 	},
 	{
@@ -108,15 +108,57 @@ const completions: CompletionDefinition[] = [
 		label: 'install(TARGETS)',
 		detail: 'Install a ROS 2 target',
 		documentation: 'Installs an executable or library into the standard ROS 2 package layout.',
-		insertText: 'install(TARGETS ${1:target_name}\n  ARCHIVE DESTINATION lib\n  LIBRARY DESTINATION lib\n  RUNTIME DESTINATION lib/${PROJECT_NAME}\n)',
+		insertText: 'install(TARGETS ${1:target_name}\n  DESTINATION lib/${2:\\${PROJECT_NAME}}\n)',
 		keywords: ['install', 'install_targets', 'target']
 	},
 	{
 		label: 'install(DIRECTORY)',
 		detail: 'Install headers or resource directories',
 		documentation: 'Installs a package directory, commonly include/ or resource/.',
-		insertText: 'install(DIRECTORY ${1:include}/\n  DESTINATION include\n)',
+		insertText: 'install(DIRECTORY ${1:include}/\n  DESTINATION ${2:include}\n)',
 		keywords: ['install', 'install_directory', 'directory', 'headers']
+	},
+	{
+		label: 'ros2_install_library',
+		detail: 'Install a ROS 2 shared library',
+		documentation: 'Installs a shared or static library under lib, which is the standard ament layout for libraries.',
+		insertText: 'install(TARGETS ${1:library_target}\n  ARCHIVE DESTINATION lib\n  LIBRARY DESTINATION lib\n  RUNTIME DESTINATION lib\n)',
+		keywords: ['ros2_install_library', 'install_library', 'library']
+	},
+	{
+		label: 'ros2_install_executable',
+		detail: 'Install a ROS 2 executable',
+		documentation: 'Installs a node executable under lib/<package>, as expected by ros2 run.',
+		insertText: 'install(TARGETS ${1:executable_target}\n  DESTINATION lib/${2:\\${PROJECT_NAME}}\n)',
+		keywords: ['ros2_install_executable', 'install_executable', 'executable']
+	},
+	{
+		label: 'ros2_install_share_directory',
+		detail: 'Install launch, config, rviz, or other package resources',
+		documentation: 'Installs a resource directory below share/<package>, commonly used for launch and config files.',
+		insertText: 'install(DIRECTORY ${1:launch}/\n  DESTINATION share/${2:\\${PROJECT_NAME}}/${3:launch}\n)',
+		keywords: ['ros2_install_share_directory', 'install_share', 'launch', 'config']
+	},
+	{
+		label: 'ros2_install_include_directory',
+		detail: 'Install public C++ headers',
+		documentation: 'Installs the package include directory to the global include prefix.',
+		insertText: 'install(DIRECTORY ${1:include}/\n  DESTINATION include\n)',
+		keywords: ['ros2_install_include_directory', 'install_include', 'headers']
+	},
+	{
+		label: 'ros2_install_package_metadata',
+		detail: 'Install package.xml and ament resource marker',
+		documentation: 'Installs the metadata required for package discovery and the ament index.',
+		insertText: 'install(FILES package.xml\n  DESTINATION share/${1:\\${PROJECT_NAME}}\n)\n\ninstall(FILES resource/${1}\n  DESTINATION share/ament_index/resource_index/packages\n)',
+		keywords: ['ros2_install_package_metadata', 'install_metadata', 'package_xml', 'resource_index']
+	},
+	{
+		label: 'ros2_install_plugin_description',
+		detail: 'Install a plugin XML description',
+		documentation: 'Installs a plugin description file where pluginlib can discover it.',
+		insertText: 'install(FILES ${1:plugin_description.xml}\n  DESTINATION share/${2:\\${PROJECT_NAME}}\n)',
+		keywords: ['ros2_install_plugin_description', 'install_plugin', 'plugin_xml']
 	},
 	{
 		label: 'pluginlib_export_plugin_description_file',
