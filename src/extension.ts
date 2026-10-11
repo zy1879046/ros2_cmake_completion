@@ -147,6 +147,48 @@ const completions: CompletionDefinition[] = [
 		keywords: ['ament_export_dependencies', 'rosidl_default_runtime', 'export_interfaces']
 	},
 	{
+		label: 'ament_export_dependencies',
+		detail: 'Export ROS 2 package dependencies',
+		documentation: 'Makes dependencies available to packages that depend on this package.',
+		insertText: 'ament_export_dependencies(\n  ${1:rclcpp}\n  ${2:additional_dependency}\n)',
+		keywords: ['ament_export_dependencies', 'export_dependencies', 'export']
+	},
+	{
+		label: 'ament_export_include_directories',
+		detail: 'Export public include directories',
+		documentation: 'Exports public headers for downstream ROS 2 packages.',
+		insertText: 'ament_export_include_directories(${1:include})',
+		keywords: ['ament_export_include_directories', 'export_include', 'export_headers']
+	},
+	{
+		label: 'ament_export_libraries',
+		detail: 'Export libraries',
+		documentation: 'Exports library targets for downstream ROS 2 packages.',
+		insertText: 'ament_export_libraries(\n  ${1:library_target}\n)',
+		keywords: ['ament_export_libraries', 'export_libraries', 'export_library']
+	},
+	{
+		label: 'ament_export_targets',
+		detail: 'Export modern CMake targets',
+		documentation: 'Exports an install target set with its library target available to downstream packages.',
+		insertText: 'ament_export_targets(${1:export_name} HAS_LIBRARY_TARGET)',
+		keywords: ['ament_export_targets', 'export_targets', 'cmake_targets']
+	},
+	{
+		label: 'install(EXPORT)',
+		detail: 'Install an exported CMake target set',
+		documentation: 'Installs target metadata so downstream packages can import the library targets.',
+		insertText: 'install(EXPORT ${1:export_name}\n  FILE ${2:${1}Targets.cmake}\n  DESTINATION share/\\${PROJECT_NAME}/cmake\n)',
+		keywords: ['install_export', 'install(EXPORT)', 'export_targets']
+	},
+	{
+		label: 'ros2_export_library',
+		detail: 'Install and export a ROS 2 library',
+		documentation: 'Installs a library, headers, CMake targets, and package exports for downstream use.',
+		insertText: 'install(TARGETS ${1:library_target}\n  EXPORT ${2:export_name}\n  ARCHIVE DESTINATION lib\n  LIBRARY DESTINATION lib\n  RUNTIME DESTINATION lib\n)\n\ninstall(DIRECTORY ${3:include}/\n  DESTINATION include\n)\n\ninstall(EXPORT ${2}\n  FILE ${4:${2}Targets.cmake}\n  DESTINATION share/\\${PROJECT_NAME}/cmake\n)\n\nament_export_targets(${2} HAS_LIBRARY_TARGET)\nament_export_include_directories(include)',
+		keywords: ['ros2_export_library', 'export_library', 'library_export']
+	},
+	{
 		label: 'find_package(ROS 2 dependency)',
 		detail: 'Find a ROS 2 package dependency',
 		documentation: 'Looks up a ROS 2 package exported through the ament index.',

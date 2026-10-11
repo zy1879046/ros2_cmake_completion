@@ -30,6 +30,9 @@
 | `ros2_install_package_metadata` | 安装 `package.xml` 和 ament index 包标记 |
 | `ros2_interface_package` | 创建接口包并生成 `msg`、`srv`、`action` |
 | `rosidl_generate_interfaces` | 配置 ROS 2 接口生成 |
+| `ament_export_dependencies` | 导出下游包需要的依赖 |
+| `ament_export_targets` | 导出现代 CMake targets |
+| `ros2_export_library` | 安装并导出 ROS 2 库和头文件 |
 
 ## 完整示例
 
@@ -132,6 +135,14 @@ RCLCPP_COMPONENTS_REGISTER_NODE(example_nodes::ExampleComponent)
 - 包标记安装到 `share/ament_index/resource_index/packages`。
 - plugin XML 安装到 `share/${PROJECT_NAME}`，并使用相应的插件机制注册。
 - 安装目标中优先使用 `${PROJECT_NAME}`，不要把包名硬编码。
+
+## 导出规范
+
+- 使用 `ament_export_include_directories` 导出公共头文件目录。
+- 使用 `ament_export_libraries` 或 `ament_export_targets` 导出库。
+- 使用 `ament_export_dependencies` 导出下游包需要的 ROS 2 依赖。
+- 使用 `install(EXPORT ...)` 将 CMake target 文件安装到 `share/${PROJECT_NAME}/cmake`。
+- 导出名必须和 `install(TARGETS ... EXPORT ...)` 中的导出名保持一致。
 
 ## 开发和打包
 
