@@ -1,73 +1,159 @@
 # ROS 2 CMake Completion
 
-Context-aware completion for ROS 2 `CMakeLists.txt` files.
+Context-aware completion for ROS 2 `CMakeLists.txt` files. The extension inserts common `ament_cmake`, `pluginlib`, and `rclcpp_components` patterns as editable VS Code snippets.
 
 ## Features
 
+- Executables and libraries with `ament_target_dependencies`.
+- Composable node component libraries and registration macros.
+- pluginlib library registration and plugin XML installation.
+- ROS 2 target, header, share-resource, metadata, and plugin installation rules.
+- Tab stops for target names, source files, dependencies, package names, and plugin classes.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+## Usage
 
-For example if there is an image subfolder under your extension project workspace:
+1. Open a `CMakeLists.txt` or `.cmake` file.
+2. Type a completion prefix such as `ros2_add_executable`, `ros2_component_library`, `install`, or `rclcpp_components`.
+3. Select a completion and press `Tab` to move through its parameters.
+4. Replace placeholder values with the names used by your package.
 
-\!\[feature X\]\(images/feature-x.png\)
+The following prefixes are useful starting points:
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+| Prefix | Purpose |
+| --- | --- |
+| `ros2_add_executable` | Create an executable and add ROS 2 dependencies |
+| `ros2_component_library` | Create and register a composable node library |
+| `rclcpp_components_register_nodes` | Register one or more component classes |
+| `ros2_plugin_library` | Create and register a pluginlib library |
+| `ros2_install_executable` | Install a node under `lib/<package>` |
+| `ros2_install_share_directory` | Install launch, config, rviz, and urdf directories together |
+| `ros2_install_package_metadata` | Install `package.xml` and the ament index marker |
 
-## Requirements
+## Complete Example
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+A typical executable package can use the following structure:
 
-## Extension Settings
+```cmake
+cmake_minimum_required(VERSION 3.8)
+project(example_nodes)
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(example_interfaces REQUIRED)
 
-For example:
+add_executable(talker_node
+  src/talker.cpp
+)
 
-This extension contributes the following settings:
+target_include_directories(talker_node PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+ament_target_dependencies(talker_node
+  rclcpp
+  example_interfaces
+)
 
-## Known Issues
+install(TARGETS talker_node
+  DESTINATION lib/${PROJECT_NAME}
+)
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+install(DIRECTORY
+  launch
+  config
+  rviz
+  DESTINATION share/${PROJECT_NAME}
+)
 
-## Release Notes
+install(DIRECTORY include/
+  DESTINATION include
+)
 
-Users appreciate release notes as you update your extension.
+install(FILES package.xml
+  DESTINATION share/${PROJECT_NAME}
+)
 
-### 1.0.0
+install(FILES resource/${PROJECT_NAME}
+  DESTINATION share/ament_index/resource_index/packages
+)
 
-Initial release of ...
+ament_package()
+```
 
-### 1.0.1
+## Component Example
 
-Fixed issue #.
+For a composable node, build a shared library and register the fully qualified class name:
 
-### 1.1.0
+```cmake
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
 
-Added features X, Y, and Z.
+add_library(example_component SHARED
+  src/example_component.cpp
+)
 
+ament_target_dependencies(example_component
+  rclcpp
+  rclcpp_components
+)
 
-## Following extension guidelines
+rclcpp_components_register_nodes(example_component
+  "example_nodes::ExampleComponent"
+)
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+install(TARGETS example_component
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib
+)
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+ament_package()
+```
 
-## Working with Markdown
+The C++ class must include the component registration macro, for example:
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+```cpp
+#include "rclcpp_components/register_node_macro.hpp"
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+RCLCPP_COMPONENTS_REGISTER_NODE(example_nodes::ExampleComponent)
+```
 
-## For more information
+## Installation Conventions
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+- Install ROS 2 executables to `lib/${PROJECT_NAME}` so that `ros2 run` can find them.
+- Install shared libraries to `lib`.
+- Install public headers to `include`.
+- Install launch, config, rviz, urdf, and other package resources together to `share/${PROJECT_NAME}`.
+- Install `package.xml` to `share/${PROJECT_NAME}`.
+- Install the package marker to `share/ament_index/resource_index/packages`.
+- Install plugin XML files to `share/${PROJECT_NAME}` and register them with the appropriate plugin mechanism.
+- Use `${PROJECT_NAME}` instead of hard-coding the package name in install destinations.
 
-### 0.0.1
+## Development
 
-Initial ROS 2 CMake completion release.
+```bash
+npm install
+npm run compile
+npm run package:vsix
+```
+
+The generated file can be installed locally with:
+
+```bash
+code --install-extension ros2-cmake-completion-0.0.1.vsix
+```
+
+## Publishing
+
+Set the `publisher` field in `package.json` to your Marketplace Publisher ID, then authenticate and publish:
+
+```bash
+npx @vscode/vsce login <publisher-id>
+npx @vscode/vsce publish
+```
+
+## License
+
+MIT
