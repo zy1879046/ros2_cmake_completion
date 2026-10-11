@@ -1,37 +1,37 @@
-# ROS 2 CMake Completion
+# ROS 2 CMake 补全
 
-Context-aware completion for ROS 2 `CMakeLists.txt` files. The extension inserts common `ament_cmake`, `pluginlib`, and `rclcpp_components` patterns as editable VS Code snippets.
+这是一个 VS Code 扩展，为 ROS 2 `CMakeLists.txt` 和 `.cmake` 文件提供上下文补全。扩展会生成常用的 `ament_cmake`、`pluginlib` 和 `rclcpp_components` 代码片段，并支持通过 `Tab` 逐项填写参数。
 
-## Features
+## 功能
 
-- Executables and libraries with `ament_target_dependencies`.
-- Composable node component libraries and registration macros.
-- pluginlib library registration and plugin XML installation.
-- ROS 2 target, header, share-resource, metadata, and plugin installation rules.
-- Tab stops for target names, source files, dependencies, package names, and plugin classes.
+- 创建带 `ament_target_dependencies` 的可执行文件和库。
+- 创建并注册可组合节点组件库。
+- 注册 pluginlib 插件和安装插件 XML。
+- 补全 ROS 2 目标、头文件、share 资源、包元数据和插件安装规则。
+- 目标名、源码、依赖、包名和插件类名均支持 Tab 参数。
 
-## Usage
+## 使用方法
 
-1. Open a `CMakeLists.txt` or `.cmake` file.
-2. Type a completion prefix such as `ros2_add_executable`, `ros2_component_library`, `install`, or `rclcpp_components`.
-3. Select a completion and press `Tab` to move through its parameters.
-4. Replace placeholder values with the names used by your package.
+1. 打开 `CMakeLists.txt` 或 `.cmake` 文件。
+2. 输入补全前缀，例如 `ros2_add_executable`、`ros2_component_library`、`install` 或 `rclcpp_components`。
+3. 选择补全项，然后按 `Tab` 依次填写参数。
+4. 将占位值替换为当前 ROS 2 包中的实际名称。
 
-The following prefixes are useful starting points:
+常用前缀：
 
-| Prefix | Purpose |
+| 前缀 | 作用 |
 | --- | --- |
-| `ros2_add_executable` | Create an executable and add ROS 2 dependencies |
-| `ros2_component_library` | Create and register a composable node library |
-| `rclcpp_components_register_nodes` | Register one or more component classes |
-| `ros2_plugin_library` | Create and register a pluginlib library |
-| `ros2_install_executable` | Install a node under `lib/<package>` |
-| `ros2_install_share_directory` | Install launch, config, rviz, and urdf directories together |
-| `ros2_install_package_metadata` | Install `package.xml` and the ament index marker |
+| `ros2_add_executable` | 创建可执行文件并添加 ROS 2 依赖 |
+| `ros2_component_library` | 创建并注册可组合节点库 |
+| `rclcpp_components_register_nodes` | 注册一个或多个组件类 |
+| `ros2_plugin_library` | 创建并注册 pluginlib 库 |
+| `ros2_install_executable` | 将节点安装到 `lib/<package>` |
+| `ros2_install_share_directory` | 将 launch、config、rviz、urdf 等目录一起安装 |
+| `ros2_install_package_metadata` | 安装 `package.xml` 和 ament index 包标记 |
 
-## Complete Example
+## 完整示例
 
-A typical executable package can use the following structure:
+典型的 ROS 2 可执行文件包可以使用下面的 `CMakeLists.txt`：
 
 ```cmake
 cmake_minimum_required(VERSION 3.8)
@@ -81,9 +81,9 @@ install(FILES resource/${PROJECT_NAME}
 ament_package()
 ```
 
-## Component Example
+## 组件示例
 
-For a composable node, build a shared library and register the fully qualified class name:
+可组合节点应构建为共享库，并注册完整的命名空间类名：
 
 ```cmake
 find_package(ament_cmake REQUIRED)
@@ -112,7 +112,7 @@ install(TARGETS example_component
 ament_package()
 ```
 
-The C++ class must include the component registration macro, for example:
+C++ 类中还需要包含组件注册宏，例如：
 
 ```cpp
 #include "rclcpp_components/register_node_macro.hpp"
@@ -120,18 +120,18 @@ The C++ class must include the component registration macro, for example:
 RCLCPP_COMPONENTS_REGISTER_NODE(example_nodes::ExampleComponent)
 ```
 
-## Installation Conventions
+## ROS 2 安装规范
 
-- Install ROS 2 executables to `lib/${PROJECT_NAME}` so that `ros2 run` can find them.
-- Install shared libraries to `lib`.
-- Install public headers to `include`.
-- Install launch, config, rviz, urdf, and other package resources together to `share/${PROJECT_NAME}`.
-- Install `package.xml` to `share/${PROJECT_NAME}`.
-- Install the package marker to `share/ament_index/resource_index/packages`.
-- Install plugin XML files to `share/${PROJECT_NAME}` and register them with the appropriate plugin mechanism.
-- Use `${PROJECT_NAME}` instead of hard-coding the package name in install destinations.
+- ROS 2 可执行文件安装到 `lib/${PROJECT_NAME}`，这样 `ros2 run` 才能找到它们。
+- 共享库安装到 `lib`。
+- 公共头文件安装到 `include`。
+- launch、config、rviz、urdf 和其他包资源统一安装到 `share/${PROJECT_NAME}`。
+- `package.xml` 安装到 `share/${PROJECT_NAME}`。
+- 包标记安装到 `share/ament_index/resource_index/packages`。
+- plugin XML 安装到 `share/${PROJECT_NAME}`，并使用相应的插件机制注册。
+- 安装目标中优先使用 `${PROJECT_NAME}`，不要把包名硬编码。
 
-## Development
+## 开发和打包
 
 ```bash
 npm install
@@ -139,21 +139,52 @@ npm run compile
 npm run package:vsix
 ```
 
-The generated file can be installed locally with:
+本地安装生成的 VSIX：
 
 ```bash
-code --install-extension ros2-cmake-completion-0.0.1.vsix
+code --install-extension ros2-cmake-completion-0.0.1.vsix --force
 ```
 
-## Publishing
+## 发布到扩展市场
 
-Set the `publisher` field in `package.json` to your Marketplace Publisher ID, then authenticate and publish:
+将 `package.json` 中的 `publisher` 设置为自己的 Marketplace Publisher ID，然后执行：
 
 ```bash
 npx @vscode/vsce login <publisher-id>
 npx @vscode/vsce publish
 ```
 
-## License
+## 提交规范
+
+本仓库使用 Conventional Commits：
+
+```text
+<type>(<可选范围>): <简短的祈使句主题>
+```
+
+常用类型：
+
+| 类型 | 用途 |
+| --- | --- |
+| `feat` | 新增用户可见功能 |
+| `fix` | 修复错误行为 |
+| `docs` | 只修改文档 |
+| `refactor` | 不改变行为的代码重构 |
+| `test` | 新增或修改测试 |
+| `build` | 修改构建、打包或发布配置 |
+| `chore` | 其他维护性修改 |
+
+示例：
+
+```text
+feat(completion): add ROS 2 component registration snippets
+fix(install): use lib/<package> for executable targets
+docs: add ROS 2 CMake usage examples
+build: prepare VSIX packaging
+```
+
+提交标题要简短明确，使用祈使语气；一次提交只处理一个主题，不要混入无关修改。
+
+## 许可证
 
 MIT
