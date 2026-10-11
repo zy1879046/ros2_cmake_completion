@@ -31,7 +31,7 @@ const completions: CompletionDefinition[] = [
 		label: 'ros2_plugin_library',
 		detail: 'Build and register a ROS 2 plugin library',
 		documentation: 'Creates, installs, and exports a plugin library through pluginlib.',
-		insertText: 'add_library(${1:plugin_name} SHARED\n  ${2:src/plugin.cpp}\n)\n\nament_target_dependencies(${1}\n  ${3:pluginlib}\n)\n\npluginlib_export_plugin_description_file(${4:base_package} ${5:plugin_description.xml})\n\ninstall(TARGETS ${1}\n  ARCHIVE DESTINATION lib\n  LIBRARY DESTINATION lib\n  RUNTIME DESTINATION lib/${PROJECT_NAME}\n)',
+		insertText: 'add_library(${1:plugin_name} SHARED\n  ${2:src/plugin.cpp}\n)\n\nament_target_dependencies(${1}\n  ${3:pluginlib}\n)\n\npluginlib_export_plugin_description_file(${4:base_package} ${5:plugin_description.xml})\n\ninstall(TARGETS ${1}\n  ARCHIVE DESTINATION lib\n  LIBRARY DESTINATION lib\n  RUNTIME DESTINATION lib/${PROJECT_NAME}\n)\n\ninstall(FILES ${5}\n  DESTINATION share/${PROJECT_NAME}\n)',
 		keywords: ['ros2_plugin_library', 'plugin_library', 'plugin']
 	},
 	{

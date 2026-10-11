@@ -12,6 +12,7 @@ Context-aware completion for ROS 2 `CMakeLists.txt` files.
 - Type `ros2_plugin_executable` to create and install a ROS 2 executable target.
 - Type `ros2_component_library` to create and register a composable node library.
 - Complete `rclcpp_components_register_nodes` or `rclcpp_components_register_node` for component registration.
+- Generated ROS 2 executables are installed to `lib/${PROJECT_NAME}`, not `bin`.
 - Complete `find_package`, `ament_export_dependencies`, and `ament_package` snippets.
 - Works in `CMakeLists.txt` and `.cmake` files using the CMake language mode.
 
