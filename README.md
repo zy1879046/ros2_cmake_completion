@@ -183,7 +183,7 @@ chmod +x install.sh
 ./install.sh --package-only
 ```
 
-脚本会在容器中构建 VSIX。然后在 VS Code 已连接到该 Dev Container 的窗口中：
+脚本会在容器中构建 VSIX。请确保项目位于宿主机和容器共享的挂载目录；如果不是，请先使用 `docker cp` 将 VSIX 拷回宿主机。然后在 VS Code 已连接到该 Dev Container 的窗口中：
 
 1. 打开扩展面板。
 2. 点击右上角 `...`。

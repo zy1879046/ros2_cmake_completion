@@ -39,13 +39,15 @@ fi
 
 if [[ "${PACKAGE_ONLY}" == "1" ]]; then
   echo "VSIX 已生成：${VSIX_PATH}"
-  echo "请在 VS Code 的 Remote/Dev Container 窗口中选择‘从 VSIX 安装’。"
+  echo "请将 VSIX 放在宿主机可访问的挂载目录，或使用 docker cp 拷回宿主机。"
+  echo "然后在 VS Code 的 Remote/Dev Container 窗口中选择‘从 VSIX 安装’，并安装到当前容器。"
   exit 0
 fi
 
 if ! command -v code >/dev/null 2>&1; then
   echo "未找到容器内的 code 命令。VSIX 已生成：${VSIX_PATH}"
-  echo "请在 VS Code 的 Remote/Dev Container 窗口中执行："
+  echo "请先将 VSIX 放在宿主机可访问的挂载目录，或使用 docker cp 拷回宿主机。"
+  echo "然后在 VS Code 的 Remote/Dev Container 窗口中执行："
   echo "1. 打开扩展面板"
   echo "2. 选择右上角‘...’ -> ‘从 VSIX 安装’"
   echo "3. 选择 ${VSIX_PATH}"
