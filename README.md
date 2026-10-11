@@ -175,6 +175,24 @@ chmod +x install.sh
 
 脚本依赖 VS Code 命令行工具 `code`。如果终端提示找不到 `code`，请在 VS Code 命令面板执行“Shell Command: Install 'code' command in PATH”。
 
+### 在 Docker 或 Dev Container 中安装
+
+如果项目位于容器中，可以在容器终端执行：
+
+```bash
+./install.sh --package-only
+```
+
+脚本会在容器中构建 VSIX。然后在 VS Code 已连接到该 Dev Container 的窗口中：
+
+1. 打开扩展面板。
+2. 点击右上角 `...`。
+3. 选择“从 VSIX 安装”。
+4. 选择容器中生成的 `ros2-cmake-completion-*.vsix`。
+5. 确认安装到当前 Dev Container。
+
+如果容器内已经提供 `code` 命令，直接执行 `./install.sh` 即可自动安装。注意，扩展应安装到当前 Remote/Dev Container，不是只安装到本机 VS Code。
+
 ## 发布到扩展市场
 
 将 `package.json` 中的 `publisher` 设置为自己的 Marketplace Publisher ID，然后执行：
