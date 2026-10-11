@@ -167,6 +167,12 @@ chmod +x install.sh
 ./install.sh
 ```
 
+脚本兼容 Bash、zsh 和系统 `/bin/sh`，也可以显式执行：
+
+```bash
+zsh install.sh
+```
+
 脚本会自动安装项目依赖、生成 VSIX 并安装扩展。如果已经有 VSIX 文件，也可以直接传入路径：
 
 ```bash

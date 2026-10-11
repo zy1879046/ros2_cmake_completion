@@ -1,24 +1,24 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-set -euo pipefail
+set -eu
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-VSIX_PATH="${1:-}"
-PACKAGE_ONLY="${PACKAGE_ONLY:-0}"
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+VSIX_PATH="${1-}"
+PACKAGE_ONLY="${PACKAGE_ONLY-0}"
 
-if [[ "${VSIX_PATH}" == "--package-only" ]]; then
+if [ "${VSIX_PATH}" = "--package-only" ]; then
   PACKAGE_ONLY=1
   VSIX_PATH=""
 fi
 
-if [[ -z "${VSIX_PATH}" ]]; then
+if [ -z "${VSIX_PATH}" ]; then
   if ! command -v npm >/dev/null 2>&1; then
     echo "错误：未找到 npm。首次从源码安装需要 Node.js 和 npm。" >&2
     exit 1
   fi
 
   cd "${SCRIPT_DIR}"
-  if [[ ! -d node_modules ]]; then
+  if [ ! -d node_modules ]; then
     echo "正在安装项目依赖..."
     npm install
   fi
@@ -27,17 +27,18 @@ if [[ -z "${VSIX_PATH}" ]]; then
   npm run package:vsix
   VSIX_PATH="${SCRIPT_DIR}/ros2-cmake-completion-$(node -p "require('./package.json').version").vsix"
 else
-  if [[ "${VSIX_PATH}" != /* ]]; then
-    VSIX_PATH="$(cd -- "$(dirname -- "${VSIX_PATH}")" && pwd)/$(basename -- "${VSIX_PATH}")"
-  fi
+  case "${VSIX_PATH}" in
+    /*) ;;
+    *) VSIX_PATH="$(CDPATH= cd -- "$(dirname -- "${VSIX_PATH}")" && pwd)/$(basename -- "${VSIX_PATH}")" ;;
+  esac
 fi
 
-if [[ ! -f "${VSIX_PATH}" ]]; then
+if [ ! -f "${VSIX_PATH}" ]; then
   echo "错误：找不到 VSIX 文件：${VSIX_PATH}" >&2
   exit 1
 fi
 
-if [[ "${PACKAGE_ONLY}" == "1" ]]; then
+if [ "${PACKAGE_ONLY}" = "1" ]; then
   echo "VSIX 已生成：${VSIX_PATH}"
   echo "请将 VSIX 放在宿主机可访问的挂载目录，或使用 docker cp 拷回宿主机。"
   echo "然后在 VS Code 的 Remote/Dev Container 窗口中选择‘从 VSIX 安装’，并安装到当前容器。"
